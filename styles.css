@@ -1,0 +1,111 @@
+/* Colors 
+
+text = #0E0901
+background = #fdfcf9
+primary = #1C6EF2
+secondary = #FAD9A3
+accent = #09439F
+
+font-family: 'Nunito Sans', sans-serif;
+
+*/
+
+/* general */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #fdfcf9;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: 'Nunito Sans', sans-serif;
+    color: #0E0901;
+}
+
+p {
+    font-size: 15px;
+}
+
+h1{
+    font-size: 25px;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+/* Header */
+
+header {
+    background-color: #1C6EF2 ;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 25px;
+}
+
+header button {
+    padding: 5px;
+    background-color: transparent;
+    border: none;
+    margin: 0 5px;
+    height: 35px;
+    width: 35px;
+    border-radius: 5px;
+}
+
+header button:hover {
+    background-color: #4d8ef8;
+    cursor: pointer;
+}
+
+header button img {
+    height: 25px;
+    width: 25px;
+}
+
+.tasks-counter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(255, 255, 255);
+    height: 35px;
+    width: 65px;
+}
+
+.tasks-counter p {
+    font-weight: 200;
+    margin-left: 5px;
+    color: white;
+}
+
+/* tasks section */
+
+.tasks-section {
+    width: 900px;
+    margin: 2rem auto;
+}
+
+hr {
+    border-top-width: 0;
+    border-color: #cac9c6;
+    margin: 10px 0;
+}
+
+.task {
+    display: flex;
+}
+
+.due-date {
+    display: flex;
+}
