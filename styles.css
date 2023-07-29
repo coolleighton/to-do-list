@@ -96,9 +96,14 @@ header button img {
     margin: 2rem auto;
 }
 
+.tasks,
+.tasks h1{
+    margin-bottom: 20px;
+}
+
 hr {
     border-top-width: 0;
-    border-color: #cac9c6;
+    border-color: #cac9c683;
     margin: 10px 0;
 }
 
@@ -106,6 +111,87 @@ hr {
     display: flex;
 }
 
-.due-date {
+.task div,
+.task button {
+    margin-right: 10px;
+}
+
+.third-row {
     display: flex;
+    align-items: center;
+}
+
+.third-row img {
+    scale: 0.7;
+}
+
+.add-task {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.add-task img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.priority {
+    margin-left: 10px;
+}
+
+/* add task form */ 
+
+.add-task-form {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid #cac9c6;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.add-task-form input,
+.add-task-form select,
+.add-task-form button { 
+    background-color: transparent;
+    border: none;
+    margin: 5px;
+    font-family: 'Nunito Sans', sans-serif;
+    outline: none;
+}
+
+.form-third-row select, 
+.form-third-row input,
+.form-forth-row input,
+.form-forth-row button {
+    border-radius: 10px;
+    border: 1px solid #cac9c6;
+    padding: 0px 5px;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.form-forth-row input,
+.form-forth-row button {
+    padding: 5px 10px;
+}
+
+.form-forth-row input {
+    background-color: #1C6EF2;
+    color: #ffffff;
+}
+
+.form-forth-row input:hover {
+    background-color: #1450b1;
+    transition: 0.3s;
+}
+
+.form-forth-row button:hover {
+    background-color: #d6d5d3;
+    transition: 0.3s;
 }
