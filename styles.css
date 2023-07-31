@@ -104,11 +104,15 @@ header button img {
 hr {
     border-top-width: 0;
     border-color: #cac9c683;
-    margin: 10px 0;
+    margin-left: 20px;
 }
 
 .task {
     display: flex;
+    width: 100%;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .task div,
@@ -131,6 +135,7 @@ hr {
     cursor: pointer;
     align-items: center;
     margin: 10px 0;
+    display: flex;
 }
 
 .add-task img {
@@ -139,8 +144,24 @@ hr {
     margin-right: 5px;
 }
 
-.priority {
-    margin-left: 10px;
+.due-date {
+    margin-right: 10px;
+}
+
+.edit-img {
+    height: 22px;
+    margin: 5px 5px auto auto;
+    opacity: 0;
+}
+
+.task:hover .edit-img {
+    opacity: 1;
+    transition: 0.3s;
+}
+
+.task:hover {
+    background-color: #f7f5f0;
+    transition: 0.3s;
 }
 
 /* add task form */ 

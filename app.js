@@ -1,101 +1,101 @@
-let tasks = [
-    { name: "Hover floor",
-      description: "hover downstairs floors",
-      date: "20th july",
-      priority: "Priortiy 1",
-    },
-
-    { name: "Hover floor",
-      description: "hover downstairs floors",
-      date: "20th july",
-      priority: "Priortiy 1",
-    },
-
-    { name: "Hover floor",
-      description: "hover downstairs floors",
-      date: "20th july",
-      priority: "Priortiy 1",
-    },
-]
+let tasks = []
 
 // Selectors //
 
 const tasksArea = document.querySelector("#tasksArea")
 
 
-// Create addTaskForm // 
+// Render a task //
 
-function createForm() {
-    const form = document.createElement("form")
-    form.classList.add("add-task-form")
+function renderTask(title, description, dueDate, priorityNum, completed, dataId) {
+    
+    const task = document.createElement("div")
+    task.classList.add("task")
+    task.setAttribute("data-id", dataId)
 
-    const name = document.createElement("input")
-    name.type = "text"
-    name.placeholder = "Task name"
+    const taskCheckBox = document.createElement("div")
 
-    const description = document.createElement("input")
-    description.type = "text"
-    description.placeholder = "Description"
+    const checkBox = document.createElement("input")
+    checkBox.type = "checkbox"
+        if (completed === "true") {
+        checkBox.checked = true
+        }
+        else {
+        checkBox.checked = false
+        }
+
+    const taskInfo = document.createElement("div")
+
+    const taskTitle = document.createElement("h2")
+    taskTitle.textContent = title
+
+    const taskDescription = document.createElement("p")
+    taskDescription.textContent = description
 
     const thirdRow = document.createElement("div")
-    thirdRow.classList.add("form-third-row")
+    thirdRow.classList.add("third-row")
 
-    const dateInput = document.createElement("input")
-    dateInput.type = "date"
-
-    const priority = document.createElement("select")
-    const option1 = document.createElement("option")
-    option1.value = "priority 1"
-    option1.textContent = "priority 1"
-    const option2 = document.createElement("option")
-    option2.value = "priority 2"
-    option2.textContent = "priority 2"
-    const option3 = document.createElement("option")
-    option3.value = "priority 3"
-    option3.textContent = "priority 3"
-
-    const forthRow = document.createElement("div")
-    forthRow.classList.add("form-forth-row")
-
-    const cancel = document.createElement("button")
-    cancel.textContent = "Cancel"
-    cancel.addEventListener("click", function(b, e) {
-        b.preventDefault()
-        cancel.parentElement.parentElement.remove()
-        renderAndDisplayAddTask()
-    })
     
-    const submit = document.createElement("input")
-    submit.type = "submit"
-    submit.value = "Add task"
-    submit.addEventListener("click", function(e) {
-        e.preventDefault()
-        console.log("submitted")
+    if (dueDate) {
+        const calendar = document.createElement("img")
+        calendar.src = "images/calendar.png"
+        thirdRow.appendChild(calendar)
+
+        const calendarText = document.createElement("p")
+        calendarText.textContent = dueDate
+        calendarText.classList.add("due-date")
+        thirdRow.appendChild(calendarText)
+    }
+
+    const priorityText = document.createElement("p")
+    priorityText.textContent = priorityNum
+
+    const editImg = document.createElement("img")
+    editImg.src = "images/edit-grey.png"
+    editImg.classList.add("edit-img")
+
+    task.addEventListener("click", function() {
+        console.log(task.dataset.id)
     })
 
-    form.appendChild(name)
-    form.appendChild(description)
-    form.appendChild(thirdRow)
-    form.appendChild(forthRow)
-    thirdRow.appendChild(dateInput)
-    thirdRow.appendChild(priority)
-    priority.appendChild(option1)
-    priority.appendChild(option2)
-    priority.appendChild(option3)
-    forthRow.appendChild(cancel)
-    forthRow.appendChild(submit)
+    task.appendChild(taskCheckBox)
+    taskCheckBox.appendChild(checkBox)
 
-    tasksArea.appendChild(form)
+    task.appendChild(taskInfo)
+    task.appendChild(editImg)
+    taskInfo.appendChild(taskTitle)
+    taskInfo.appendChild(taskDescription)
+    taskInfo.appendChild(thirdRow)
+    thirdRow.appendChild(priorityText)
 
+    tasksArea.appendChild(task)
+}
+
+
+// render all tasks //
+
+function renderAllTasks() {
+
+    tasksArea.innerHTML = ""
+
+    const mainTitle = document.createElement("h1")
+    mainTitle.textContent = "To-Do List"
+
+    tasksArea.appendChild(mainTitle)
+
+    for (i = 0; i < tasks.length; i++) {
+        renderTask(tasks[i].name, tasks[i].description, tasks[i].date, tasks[i].priority, tasks[i].completed, tasks[i].dataId)
+    }
+
+    renderAndDisplayAddTaskButton()
 }
 
 
 // render and display addtask button //
 
-function renderAndDisplayAddTask() {
+function renderAndDisplayAddTaskButton() {
     const button = document.createElement("button")
     button.classList.add("add-task")
-    button.classList.add("task")
     button.setAttribute("id", "addTaskButton")
 
     const plusImg = document.createElement("img")
@@ -118,7 +118,7 @@ function renderAndDisplayAddTask() {
     })
 
     button.addEventListener("click", function() {
-        createForm()
+        tasksArea.appendChild(createForm())
         button.style.display = "none"
     })
 
@@ -126,75 +126,109 @@ function renderAndDisplayAddTask() {
 
 }
 
+// function to construct new task object // 
 
-// Render tasks //
+function createTaskObject(name, description, date, priority, completed, dataId) {
 
-function renderTask(title, description, dueDate, priorityNum) {
-    const task = document.createElement("div")
-    task.classList.add("task")
+    this.name = name
+    this.description = description
+    this.date = date
+    this.priority = priority
+    this.completed = completed
+    this.dataId = dataId
+}
 
-    const taskCheckBox = document.createElement("div")
 
-    const checkBox = document.createElement("input")
-    checkBox.type = "checkbox"
 
-    const taskInfo = document.createElement("div")
+// Create addTaskForm //
 
-    const taskTitle = document.createElement("h2")
-    taskTitle.textContent = title
+function createForm() {
+    const form = document.createElement("form")
+    form.classList.add("add-task-form")
 
-    const taskDescription = document.createElement("p")
-    taskDescription.textContent = description
+    const name = document.createElement("input")
+    name.type = "text"
+    name.placeholder = "Task name"
+    name.setAttribute("required", true)
+
+    const description = document.createElement("input")
+    description.type = "text"
+    description.placeholder = "Description"
 
     const thirdRow = document.createElement("div")
-    thirdRow.classList.add("third-row")
+    thirdRow.classList.add("form-third-row")
 
-    const calendar = document.createElement("img")
-    calendar.src = "images/calendar.png"
+    const dateInput = document.createElement("input")
+    dateInput.type = "date"
 
-    const calendarText = document.createElement("p")
-    calendarText.textContent = dueDate
+    const priority = document.createElement("select")
+    const option1 = document.createElement("option")
+    option1.value = "Priority 1"
+    option1.textContent = "Priority 1"
+    const option2 = document.createElement("option")
+    option2.value = "Priority 2"
+    option2.textContent = "Priority 2"
+    const option3 = document.createElement("option")
+    option3.value = "Priority 3"
+    option3.textContent = "Priority 3"
 
-    const priorityText = document.createElement("p")
-    priorityText.classList.add("priority")
-    priorityText.textContent = priorityNum
-
-    const divider = document.createElement("hr")
-
-    task.appendChild(taskCheckBox)
-    taskCheckBox.appendChild(checkBox)
-
-    task.appendChild(taskInfo)
-    taskInfo.appendChild(taskTitle)
-    taskInfo.appendChild(taskDescription)
-    taskInfo.appendChild(thirdRow)
+    const completed = document.createElement("select")
+    const option4 = document.createElement("option")
+    option4.value = true
+    option4.textContent = "Yes"
+    const option5 = document.createElement("option")
+    option5.value = false
+    option5.textContent = "No"
     
-    thirdRow.appendChild(calendar)
-    thirdRow.appendChild(calendarText)
-    thirdRow.appendChild(priorityText)
 
-    tasksArea.appendChild(task)
-    tasksArea.appendChild(divider)
+    const forthRow = document.createElement("div")
+    forthRow.classList.add("form-forth-row")
+
+    const cancel = document.createElement("button")
+    cancel.textContent = "Cancel"
+    cancel.addEventListener("click", function(e) {
+        e.preventDefault()
+        cancel.parentElement.parentElement.remove()
+        renderAndDisplayAddTask()
+    })
+    
+    const submit = document.createElement("input")
+    submit.type = "submit"
+    submit.value = "Add task"
+    form.addEventListener("submit", function(e) {
+        e.preventDefault()
+        
+        let task = new createTaskObject(name.value, description.value, dateInput.value, priority.value, completed.value, Date.now())
+
+        console.log(task)
+
+        tasks.push(task)
+
+        renderAllTasks()
+        
+    })
+
+    form.appendChild(name)
+    form.appendChild(description)
+    form.appendChild(thirdRow)
+    form.appendChild(forthRow)
+    thirdRow.appendChild(dateInput)
+    thirdRow.appendChild(priority)
+    priority.appendChild(option1)
+    priority.appendChild(option2)
+    priority.appendChild(option3)
+    thirdRow.appendChild(completed)
+    completed.appendChild(option5)
+    completed.appendChild(option4)
+    forthRow.appendChild(cancel)
+    forthRow.appendChild(submit)
+
+    return form
+
 }
 
 
-// display tasks
-
-function displayTasks() {
-    for (i = 0; i < tasks.length; i++) {
-        renderTask(tasks[i].name, tasks[i].description, tasks[i].date, tasks[i].priority)
-    }
-
-    renderAndDisplayAddTask()
-}
-
-// add task to array 
-
-
-
-
-
-displayTasks()
+renderAllTasks()
 
 
 
