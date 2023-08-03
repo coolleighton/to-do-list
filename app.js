@@ -4,10 +4,21 @@ let tasks = []
 
 const tasksArea = document.querySelector("#tasksArea")
 
+// function to construct new task object // 
+
+function createTaskObject(name, description, date, priority, dataId) {
+
+    this.name = name
+    this.description = description
+    this.date = date
+    this.priority = priority
+    this.dataId = dataId
+}
+
 
 // Render a task //
 
-function renderTask(title, description, dueDate, priorityNum, completed, dataId) {
+function renderTask(title, description, dueDate, priorityNum, dataId) {
     
     const task = document.createElement("div")
     task.classList.add("task")
@@ -17,12 +28,15 @@ function renderTask(title, description, dueDate, priorityNum, completed, dataId)
 
     const checkBox = document.createElement("input")
     checkBox.type = "checkbox"
-        if (completed === "true") {
-        checkBox.checked = true
-        }
-        else {
-        checkBox.checked = false
-        }
+    checkBox.addEventListener("change", function(e) {
+
+        e.target.parentElement.parentElement.remove()
+  
+        let arrayIndex = tasks.findIndex(item => item.dataId === parseInt(e.target.parentElement.parentElement.dataset.id))
+
+        tasks.splice(arrayIndex, 1)
+        
+    })
 
     const taskInfo = document.createElement("div")
 
@@ -54,8 +68,18 @@ function renderTask(title, description, dueDate, priorityNum, completed, dataId)
     editImg.src = "images/edit-grey.png"
     editImg.classList.add("edit-img")
 
-    task.addEventListener("click", function() {
-        console.log(task.dataset.id)
+    editImg.addEventListener("mouseenter", function() {
+        editImg.src = "images/edit-black.png";
+    })
+
+    editImg.addEventListener("mouseleave", function() {
+        editImg.src = "images/edit-grey.png"
+    })
+
+    editImg.addEventListener("click", function() {
+        task.parentNode.insertBefore(createEditTaskForm(title, description, dueDate, priorityNum, dataId), task.nextSibling)
+        document.querySelector("#addTaskButton").remove()
+        task.remove()
     })
 
     task.appendChild(taskCheckBox)
@@ -84,7 +108,7 @@ function renderAllTasks() {
     tasksArea.appendChild(mainTitle)
 
     for (i = 0; i < tasks.length; i++) {
-        renderTask(tasks[i].name, tasks[i].description, tasks[i].date, tasks[i].priority, tasks[i].completed, tasks[i].dataId)
+        renderTask(tasks[i].name, tasks[i].description, tasks[i].date, tasks[i].priority, tasks[i].dataId)
     }
 
     renderAndDisplayAddTaskButton()
@@ -118,7 +142,7 @@ function renderAndDisplayAddTaskButton() {
     })
 
     button.addEventListener("click", function() {
-        tasksArea.appendChild(createForm())
+        tasksArea.appendChild(createAddTaskForm())
         button.style.display = "none"
     })
 
@@ -126,23 +150,10 @@ function renderAndDisplayAddTaskButton() {
 
 }
 
-// function to construct new task object // 
-
-function createTaskObject(name, description, date, priority, completed, dataId) {
-
-    this.name = name
-    this.description = description
-    this.date = date
-    this.priority = priority
-    this.completed = completed
-    this.dataId = dataId
-}
-
-
 
 // Create addTaskForm //
 
-function createForm() {
+function createAddTaskForm() {
     const form = document.createElement("form")
     form.classList.add("add-task-form")
 
@@ -172,14 +183,6 @@ function createForm() {
     option3.value = "Priority 3"
     option3.textContent = "Priority 3"
 
-    const completed = document.createElement("select")
-    const option4 = document.createElement("option")
-    option4.value = true
-    option4.textContent = "Yes"
-    const option5 = document.createElement("option")
-    option5.value = false
-    option5.textContent = "No"
-    
 
     const forthRow = document.createElement("div")
     forthRow.classList.add("form-forth-row")
@@ -189,7 +192,8 @@ function createForm() {
     cancel.addEventListener("click", function(e) {
         e.preventDefault()
         cancel.parentElement.parentElement.remove()
-        renderAndDisplayAddTask()
+        renderAndDisplayAddTaskButton()
+        renderAllTasks()
     })
     
     const submit = document.createElement("input")
@@ -198,9 +202,7 @@ function createForm() {
     form.addEventListener("submit", function(e) {
         e.preventDefault()
         
-        let task = new createTaskObject(name.value, description.value, dateInput.value, priority.value, completed.value, Date.now())
-
-        console.log(task)
+        let task = new createTaskObject(name.value, description.value, dateInput.value, priority.value, Date.now())
 
         tasks.push(task)
 
@@ -217,9 +219,90 @@ function createForm() {
     priority.appendChild(option1)
     priority.appendChild(option2)
     priority.appendChild(option3)
-    thirdRow.appendChild(completed)
-    completed.appendChild(option5)
-    completed.appendChild(option4)
+    forthRow.appendChild(cancel)
+    forthRow.appendChild(submit)
+
+    return form
+
+}
+
+// Create editTaskForm //
+
+function createEditTaskForm(title, description, dueDate, priorityNum, dataId) {
+
+    const form = document.createElement("form")
+    form.classList.add("add-task-form")
+
+    const nameInput = document.createElement("input")
+    nameInput.type = "text"
+    nameInput.placeholder = "Task name"
+    nameInput.value = title
+    nameInput.setAttribute("required", true)
+
+    const descriptionInput = document.createElement("input")
+    descriptionInput.type = "text"
+    descriptionInput.placeholder = "Description"
+    descriptionInput.value = description
+
+    const thirdRow = document.createElement("div")
+    thirdRow.classList.add("form-third-row")
+
+    const dateInput = document.createElement("input")
+    dateInput.type = "date"
+    dateInput.value = dueDate
+
+    const priority = document.createElement("select")
+    const option1 = document.createElement("option")
+    option1.value = "Priority 1"
+    option1.textContent = "Priority 1"
+    const option2 = document.createElement("option")
+    option2.value = "Priority 2"
+    option2.textContent = "Priority 2"
+    const option3 = document.createElement("option")
+    option3.value = "Priority 3"
+    option3.textContent = "Priority 3"
+    priority.value = priorityNum
+
+    const forthRow = document.createElement("div")
+    forthRow.classList.add("form-forth-row")
+
+    const cancel = document.createElement("button")
+    cancel.textContent = "Cancel"
+    cancel.addEventListener("click", function(e) {
+        e.preventDefault()
+        cancel.parentElement.parentElement.remove()
+        renderAndDisplayAddTaskButton()
+        renderAllTasks()
+    })
+    
+    const submit = document.createElement("input")
+    submit.type = "submit"
+    submit.value = "Save"
+    form.addEventListener("submit", function(e) {
+        e.preventDefault()
+  
+        let arrayIndex = tasks.findIndex(item => item.dataId === dataId)
+
+        tasks[arrayIndex].name = nameInput.value
+        tasks[arrayIndex].description = descriptionInput.value
+        tasks[arrayIndex].date = dateInput.value
+        tasks[arrayIndex].priority = priority.value
+
+        renderAllTasks()
+
+        console.log(tasks)
+        
+    })
+
+    form.appendChild(nameInput)
+    form.appendChild(descriptionInput)
+    form.appendChild(thirdRow)
+    form.appendChild(forthRow)
+    thirdRow.appendChild(dateInput)
+    thirdRow.appendChild(priority)
+    priority.appendChild(option1)
+    priority.appendChild(option2)
+    priority.appendChild(option3)
     forthRow.appendChild(cancel)
     forthRow.appendChild(submit)
 
