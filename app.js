@@ -1,4 +1,5 @@
 let tasks = []
+let tasksTakenFromStorage = JSON.parse(localStorage.getItem("tasks"))
 
 // Selectors //
 
@@ -35,6 +36,8 @@ function renderTask(title, description, dueDate, priorityNum, dataId) {
         let arrayIndex = tasks.findIndex(item => item.dataId === parseInt(e.target.parentElement.parentElement.dataset.id))
 
         tasks.splice(arrayIndex, 1)
+
+        addTasksToLocalStorage()
         
     })
 
@@ -205,6 +208,7 @@ function createAddTaskForm() {
         let task = new createTaskObject(name.value, description.value, dateInput.value, priority.value, Date.now())
 
         tasks.push(task)
+        addTasksToLocalStorage()
 
         renderAllTasks()
         
@@ -288,6 +292,7 @@ function createEditTaskForm(title, description, dueDate, priorityNum, dataId) {
         tasks[arrayIndex].date = dateInput.value
         tasks[arrayIndex].priority = priority.value
 
+        addTasksToLocalStorage()
         renderAllTasks()
 
         console.log(tasks)
@@ -310,8 +315,27 @@ function createEditTaskForm(title, description, dueDate, priorityNum, dataId) {
 
 }
 
+function addTasksToLocalStorage() {
+    let TasksForStorage = JSON.stringify(tasks)
+    localStorage.setItem("tasks", TasksForStorage)
 
-renderAllTasks()
+    console.log(tasksTakenFromStorage)
+    console.log(tasks)
+
+}
+
+function loadTasksFromStorage() {
+
+    tasks = tasksTakenFromStorage
+
+    console.log(tasksTakenFromStorage)
+    console.log(tasks)
+
+    renderAllTasks()
+}
+
+
+loadTasksFromStorage()
 
 
 
