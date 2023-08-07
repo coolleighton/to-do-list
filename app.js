@@ -4,6 +4,16 @@ let tasksTakenFromStorage = JSON.parse(localStorage.getItem("tasks"))
 // Selectors //
 
 const tasksArea = document.querySelector("#tasksArea")
+const headerAddTaskButton = document.querySelector("#headerAddTaskButton")
+
+
+// add functionality to header add task button //
+
+headerAddTaskButton.addEventListener("click", function() {
+    tasksArea.lastChild.remove()
+    tasksArea.appendChild(createAddTaskForm())
+})
+
 
 // function to construct new task object // 
 
@@ -31,14 +41,7 @@ function renderTask(title, description, dueDate, priorityNum, dataId) {
     checkBox.type = "checkbox"
     checkBox.addEventListener("change", function(e) {
 
-        e.target.parentElement.parentElement.remove()
-  
-        let arrayIndex = tasks.findIndex(item => item.dataId === parseInt(e.target.parentElement.parentElement.dataset.id))
-
-        tasks.splice(arrayIndex, 1)
-
-        addTasksToLocalStorage()
-        
+        completeTask(e)
     })
 
     const taskInfo = document.createElement("div")
@@ -150,7 +153,6 @@ function renderAndDisplayAddTaskButton() {
     })
 
     tasksArea.appendChild(button)
-
 }
 
 
@@ -230,7 +232,7 @@ function createAddTaskForm() {
 
 }
 
-// Create editTaskForm //
+// Create edit Task Form //
 
 function createEditTaskForm(title, description, dueDate, priorityNum, dataId) {
 
@@ -315,6 +317,8 @@ function createEditTaskForm(title, description, dueDate, priorityNum, dataId) {
 
 }
 
+// function to add tasks array to storage 
+
 function addTasksToLocalStorage() {
     let TasksForStorage = JSON.stringify(tasks)
     localStorage.setItem("tasks", TasksForStorage)
@@ -323,6 +327,8 @@ function addTasksToLocalStorage() {
     console.log(tasks)
 
 }
+
+// function to load and display tasks in storage
 
 function loadTasksFromStorage() {
 
@@ -334,6 +340,114 @@ function loadTasksFromStorage() {
     renderAllTasks()
 }
 
+// function which will remove task from array, add new array to storage and display new array
+
+function completeTask(e) {
+
+    e.target.parentElement.parentElement.remove()
+
+    let arrayIndex = tasks.findIndex(item => item.dataId === parseInt(e.target.parentElement.parentElement.dataset.id))
+
+    tasks.splice(arrayIndex, 1)
+
+    addTasksToLocalStorage()
+}
+
+/*
+function createTaskform(SubmitFunction) {
+
+    const form = document.createElement("form")
+    form.classList.add("add-task-form")
+
+    const name = document.createElement("input")
+    name.type = "text"
+    name.placeholder = "Task name"
+    name.setAttribute("required", true)
+
+    const description = document.createElement("input")
+    description.type = "text"
+    description.placeholder = "Description"
+
+    const thirdRow = document.createElement("div")
+    thirdRow.classList.add("form-third-row")
+
+    const dateInput = document.createElement("input")
+    dateInput.type = "date"
+
+    const priority = document.createElement("select")
+    const option1 = document.createElement("option")
+    option1.value = "Priority 1"
+    option1.textContent = "Priority 1"
+    const option2 = document.createElement("option")
+    option2.value = "Priority 2"
+    option2.textContent = "Priority 2"
+    const option3 = document.createElement("option")
+    option3.value = "Priority 3"
+    option3.textContent = "Priority 3"
+
+
+    const forthRow = document.createElement("div")
+    forthRow.classList.add("form-forth-row")
+
+    const cancel = document.createElement("button")
+    cancel.textContent = "Cancel"
+    cancel.addEventListener("click", function(e) {
+        e.preventDefault()
+        cancel.parentElement.parentElement.remove()
+        renderAndDisplayAddTaskButton()
+        renderAllTasks()
+    })
+    
+    const submit = document.createElement("input")
+    submit.type = "submit"
+    submit.value = "Add task"
+    form.addEventListener("submit", function(e) {
+        SubmitFunction
+    })
+
+    form.appendChild(name)
+    form.appendChild(description)
+    form.appendChild(thirdRow)
+    form.appendChild(forthRow)
+    thirdRow.appendChild(dateInput)
+    thirdRow.appendChild(priority)
+    priority.appendChild(option1)
+    priority.appendChild(option2)
+    priority.appendChild(option3)
+    forthRow.appendChild(cancel)
+    forthRow.appendChild(submit)
+
+    return form
+
+}
+
+function addNewTaskToArray(e) {
+    e.preventDefault()
+        
+    let task = new createTaskObject(name.value, description.value, dateInput.value, priority.value, Date.now())
+
+    tasks.push(task)
+    addTasksToLocalStorage()
+
+    renderAllTasks()
+}
+
+function editAndAddTaskToArray(e) {
+    e.preventDefault()
+  
+    let arrayIndex = tasks.findIndex(item => item.dataId === dataId)
+
+    tasks[arrayIndex].name = nameInput.value
+    tasks[arrayIndex].description = descriptionInput.value
+    tasks[arrayIndex].date = dateInput.value
+    tasks[arrayIndex].priority = priority.value
+
+    addTasksToLocalStorage()
+    renderAllTasks()
+
+    console.log(tasks)
+}
+*/
 
 loadTasksFromStorage()
 
