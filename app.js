@@ -5,6 +5,8 @@ let tasksTakenFromStorage = JSON.parse(localStorage.getItem("tasks"))
 
 const tasksArea = document.querySelector("#tasksArea")
 const headerAddTaskButton = document.querySelector("#headerAddTaskButton")
+const sideMenu = document.querySelector("#sideMenu")
+const lineMenuButton = document.querySelector("#lineMenuButton")
 
 
 // add functionality to header add task button //
@@ -12,6 +14,17 @@ const headerAddTaskButton = document.querySelector("#headerAddTaskButton")
 headerAddTaskButton.addEventListener("click", function() {
     tasksArea.lastChild.remove()
     tasksArea.appendChild(createAddTaskForm())
+})
+
+// display projects button //
+
+lineMenuButton.addEventListener("click", function() {
+    if (sideMenu.style.opacity === "1") {
+        sideMenu.style.opacity = "0" 
+    }
+    else {
+        sideMenu.style.opacity = "1"
+    }
 })
 
 
@@ -110,6 +123,7 @@ function renderAllTasks() {
 
     const mainTitle = document.createElement("h1")
     mainTitle.textContent = "To-Do List"
+    mainTitle.style.marginTop = "20px"
 
     tasksArea.appendChild(mainTitle)
 

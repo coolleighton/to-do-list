@@ -21,6 +21,7 @@ body {
     background-color: #fdfcf9;
 }
 
+li,
 p,
 h1,
 h2,
@@ -29,6 +30,12 @@ h4,
 h5 {
     font-family: 'Nunito Sans', sans-serif;
     color: #0E0901;
+    list-style: none;
+}
+
+li {
+    font-size: 15px;
+    padding: 10px 10px 0px;
 }
 
 p {
@@ -92,8 +99,45 @@ header button img {
 /* tasks section */
 
 .tasks-section {
-    max-width: 800px;
-    margin: 2rem auto;
+    display: grid;
+    grid-template-columns: 1fr 7fr;
+    justify-items: center;
+    padding-right: 200px;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.tasksArea {
+    grid-column: 2/2;
+}
+
+.side-menu {
+    background-color: #f1f0ed;
+    grid-column: 1/1;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.side-menu-title {
+    font-weight: 600;
+    background-color: #e2e1de;
+    font-size: 15px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.side-menu-title img {
+    height: 20px;
+    cursor: pointer;
+}
+
+.side-menu-title img:hover {
+    scale: 1.2;
+    transition: 0.3s;
 }
 
 .tasks,
