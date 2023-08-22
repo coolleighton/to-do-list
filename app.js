@@ -1,3 +1,4 @@
+let projects = []
 let tasks = []
 let tasksTakenFromStorage = JSON.parse(localStorage.getItem("tasks"))
 
@@ -7,6 +8,76 @@ const tasksArea = document.querySelector("#tasksArea")
 const headerAddTaskButton = document.querySelector("#headerAddTaskButton")
 const sideMenu = document.querySelector("#sideMenu")
 const lineMenuButton = document.querySelector("#lineMenuButton")
+const addProjectsButton = document.querySelector("#addProject")
+const addProjectFormDiv = document.querySelector("#add-project-Form")
+const addProjectForm = document.querySelector("#add-project-Form-proper")
+const addProjectsCancelButton = document.querySelector("#add-project-cancel")
+const projectName = document.querySelector("#project-name")
+const projectList = document.querySelector("#project-list")
+
+// add projects button //
+
+addProjectsButton.addEventListener("click", function() {
+    if (addProjectFormDiv.style.display === "block") {
+        addProjectFormDiv.style.display = "none" 
+    }
+    else {
+        addProjectFormDiv.style.display = "block"
+    }
+})
+
+// add projects button Form // 
+
+addProjectForm.addEventListener("submit", function(e) {
+    e.preventDefault()
+    if(projectName.value) {
+
+        let project = new createTaskArray(projectName.value)
+        projects.push(project)
+
+        projectList.innerHTML = ""
+
+        for (i = 0; i < projects.length; i++) {
+
+            renderProjects(projects[i].arrayName)
+        }
+
+        projectName.value = ""
+        addProjectFormDiv.style.display = "none" 
+    }
+    
+})
+
+// render projects function // 
+
+function renderProjects(projectName) {
+    const projectTitle = document.createElement("li")
+    projectTitle.textContent = projectName
+
+    projectTitle.addEventListener("click", function() {
+        console.log("clicked")
+    })
+
+    projectList.appendChild(projectTitle)
+}
+
+// add projects Cancel Button //
+
+addProjectsCancelButton.addEventListener("click" , function() {
+    if (addProjectFormDiv.style.display === "block") {
+        addProjectFormDiv.style.display = "none" 
+    }
+    else {
+        addProjectFormDiv.style.display = "block"
+    }
+})
+
+// function to creat a new task array // 
+
+function createTaskArray(arrayName) {
+this.arrayName = arrayName
+}
+
 
 
 // add functionality to header add task button //

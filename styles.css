@@ -102,20 +102,15 @@ header button img {
     display: grid;
     grid-template-columns: 1fr 7fr;
     justify-items: center;
-    padding-right: 200px;
     height: 100vh;
     overflow: hidden;
-}
-
-.tasksArea {
-    grid-column: 2/2;
 }
 
 .side-menu {
     background-color: #f1f0ed;
     grid-column: 1/1;
     height: 100%;
-    width: 100%;
+    width: 250px;
     opacity: 0;
     transition: 0.5s;
 }
@@ -140,9 +135,20 @@ header button img {
     transition: 0.3s;
 }
 
+.side-menu li:hover {
+    background-color: #cac9c6;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
 .tasks,
 .tasks h1{
     margin-bottom: 20px;
+}
+
+.tasks {
+    width: 80%;
+    margin-top: 10px;
 }
 
 hr {
@@ -264,3 +270,70 @@ hr {
     background-color: #d6d5d3;
     transition: 0.3s;
 }
+
+/* add project form */
+
+.add-project-Form {
+    width: 100%;
+    display: none;
+    padding-bottom: 10px;
+    background-color: #e2e1de;
+}
+
+.add-project-Form form {
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.add-project-Form form div{
+    display: flex;
+    width: 90%;
+}
+
+                    
+                    
+.add-project-input {
+    background-color: transparent;
+    border: none;
+    width: 90%;
+    margin: 10px auto;
+    font-family: 'Nunito Sans', sans-serif;
+    outline: none;
+}
+
+.add-project-submit {
+    background-color: #1C6EF2;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: white;
+    font-family: 'Nunito Sans', sans-serif;
+    margin-left: 10px;
+}
+
+.add-project-cancel {
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: 'Nunito Sans', sans-serif;
+    border: 1px solid #cac9c6;
+    margin-left: 10px;
+}
+
+.add-project-submit:hover {
+    background-color: #1450b1;
+    transition: 0.3s;
+}
+
+.add-project-cancel:hover {
+    background-color: #cac9c6;
+    transition: 0.3s;
+}
+
+

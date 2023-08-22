@@ -32,12 +32,25 @@
         <div id="sideMenu"class="side-menu">
             <div class="side-menu-title">
                 <h4>Projects</h4>
-                <img src="images/plus-black.png">
+                <img id="addProject" src="images/plus-black.png">
+            </div>
+
+            <div id="add-project-Form" class="add-project-Form">
+                <form id="add-project-Form-proper">
+                    <input type="text" placeholder="project name" class="add-project-input" id="project-name">
+                    <div>
+                        <button type="button" id="add-project-cancel" class="add-project-cancel"> Cancel</button> 
+                        <input type="submit" value="Add project" class="add-project-submit"> 
+                    </div>
+                    
+                </form>
             </div>
             
-            <ul>
+            <ul id="project-list">
+
                 <li>Car</li>
                 <li>House</li>
+
             </ul>
         </div>
         <div id="tasksArea" class="tasks">
