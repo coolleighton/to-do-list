@@ -106,41 +106,6 @@ header button img {
     overflow: hidden;
 }
 
-.side-menu {
-    background-color: #f1f0ed;
-    grid-column: 1/1;
-    height: 100%;
-    width: 250px;
-    opacity: 0;
-    transition: 0.5s;
-}
-
-.side-menu-title {
-    font-weight: 600;
-    background-color: #e2e1de;
-    font-size: 15px;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    
-}
-
-.side-menu-title img {
-    height: 20px;
-    cursor: pointer;
-}
-
-.side-menu-title img:hover {
-    scale: 1.2;
-    transition: 0.3s;
-}
-
-.side-menu li:hover {
-    background-color: #cac9c6;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
 .tasks,
 .tasks h1{
     margin-bottom: 20px;
@@ -218,6 +183,7 @@ hr {
     transition: 0.3s;
 }
 
+
 /* add task form */ 
 
 .add-task-form {
@@ -292,9 +258,7 @@ hr {
     display: flex;
     width: 90%;
 }
-
-                    
-                    
+                            
 .add-project-input {
     background-color: transparent;
     border: none;
@@ -335,5 +299,48 @@ hr {
     background-color: #cac9c6;
     transition: 0.3s;
 }
+
+/* Side Menu */
+
+
+.side-menu {
+    background-color: #f1f0ed;
+    grid-column: 1/1;
+    height: 100%;
+    width: 250px;
+    opacity: 1;
+    transition: 0.5s;
+}
+
+.side-menu-title {
+    font-weight: 600;
+    background-color: #e2e1de;
+    font-size: 15px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.side-menu-title img {
+    height: 20px;
+    cursor: pointer;
+}
+
+.side-menu-title img:hover {
+    scale: 1.2;
+    transition: 0.3s;
+}
+
+.side-menu li {
+    padding-bottom: 5px;
+}
+
+.side-menu li:hover {
+    background-color: #cac9c6;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
 
 

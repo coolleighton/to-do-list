@@ -1,6 +1,5 @@
 let projects = []
-let tasks = []
-let tasksTakenFromStorage = JSON.parse(localStorage.getItem("tasks"))
+let projectsTakenFromStorage = JSON.parse(localStorage.getItem("Projects"))
 
 // Selectors //
 
@@ -15,51 +14,208 @@ const addProjectsCancelButton = document.querySelector("#add-project-cancel")
 const projectName = document.querySelector("#project-name")
 const projectList = document.querySelector("#project-list")
 
-// add projects button //
 
-addProjectsButton.addEventListener("click", function() {
-    if (addProjectFormDiv.style.display === "block") {
-        addProjectFormDiv.style.display = "none" 
-    }
-    else {
-        addProjectFormDiv.style.display = "block"
-    }
-})
 
-// add projects button Form // 
+
+// function to create a new project array // 
+
+function createProjectArray(projectName) {
+    this.projectName = projectName
+    this.projectId = Date.now()
+    this.tasks = []
+    }
+    
+
+// render projects in side menu function // 
+
+function renderProjectsMenu() {
+    
+    for (i = 0; i < projects.length; i++) {
+
+        let project = document.createElement("li")
+        project.setAttribute("data-id", projects[i].projectId)
+
+        let projectTitle = document.createElement("h4")
+        projectTitle.textContent = projects[i].projectName
+        projectTitle.setAttribute("data-id", projects[i].projectId)
+        
+        project.addEventListener("click", function(e) {
+
+           let projectIndex = projects.findIndex(item => item.projectId === parseInt(e.target.dataset.id))
+
+           renderProjectTasks(projectIndex)
+
+        })
+
+        project.appendChild(projectTitle)
+        projectList.appendChild(project)
+
+    }
+}
+
+
+// add project to projects array // 
 
 addProjectForm.addEventListener("submit", function(e) {
     e.preventDefault()
+
     if(projectName.value) {
 
-        let project = new createTaskArray(projectName.value)
+        let project = new createProjectArray(projectName.value)
         projects.push(project)
 
         projectList.innerHTML = ""
 
-        for (i = 0; i < projects.length; i++) {
-
-            renderProjects(projects[i].arrayName)
-        }
-
+        renderProjectsMenu()
+        addProjectsToLocalStorage()
+        
         projectName.value = ""
         addProjectFormDiv.style.display = "none" 
+
     }
-    
 })
 
-// render projects function // 
 
-function renderProjects(projectName) {
-    const projectTitle = document.createElement("li")
-    projectTitle.textContent = projectName
+// render a projects tasks //
 
-    projectTitle.addEventListener("click", function() {
-        console.log("clicked")
+function renderProjectTasks(projectIndex) {
+
+    tasksArea.innerHTML = ""
+
+    const mainTitle = document.createElement("h1")
+    mainTitle.textContent = projects[projectIndex].projectName
+    mainTitle.style.marginTop = "20px"
+
+    tasksArea.appendChild(mainTitle)
+
+    for (i = 0; i < projects[projectIndex].tasks.length; i++) {
+        renderTask(projects[projectIndex].tasks[i].name, projects[projectIndex].tasks[i].description, projects[projectIndex].tasks[i].date, projects[projectIndex].tasks[i].priority, projects[projectIndex].tasks[i].dataId,projectIndex)
+    }
+
+    renderAndDisplayAddTaskButton(projectIndex)
+}
+
+// render all tasks within a project // 
+
+
+
+// render and display addtask button //
+
+function renderAndDisplayAddTaskButton(projectIndex) {
+
+    const button = document.createElement("button")
+    button.classList.add("add-task")
+    button.setAttribute("id", "addTaskButton")
+
+    const plusImg = document.createElement("img")
+    plusImg.src = "images/plus-blue.png"
+
+    const plusButtonText = document.createElement("h2")
+    plusButtonText.textContent = "Add task"
+
+    button.appendChild(plusImg)
+    button.appendChild(plusButtonText)
+
+    button.addEventListener("mouseenter", function() {
+        plusImg.src = "images/plus-blue-full.png";
+        plusButtonText.style.color = "#1C6EF2"
     })
 
-    projectList.appendChild(projectTitle)
+    button.addEventListener("mouseleave", function() {
+        plusImg.src = "images/plus-blue.png"
+        plusButtonText.style.color = "#0E0901"
+    })
+
+    button.addEventListener("click", function() {
+        tasksArea.appendChild(createAddTaskForm(projectIndex))
+        button.style.display = "none"
+    })
+
+    tasksArea.appendChild(button)
 }
+
+
+// Create addTaskForm //
+
+function createAddTaskForm(projectIndex) {
+    const form = document.createElement("form")
+    form.classList.add("add-task-form")
+
+    const name = document.createElement("input")
+    name.type = "text"
+    name.placeholder = "Task name"
+    name.setAttribute("required", true)
+
+    const description = document.createElement("input")
+    description.type = "text"
+    description.placeholder = "Description"
+
+    const thirdRow = document.createElement("div")
+    thirdRow.classList.add("form-third-row")
+
+    const dateInput = document.createElement("input")
+    dateInput.type = "date"
+
+    const priority = document.createElement("select")
+    const option1 = document.createElement("option")
+    option1.value = "Priority 1"
+    option1.textContent = "Priority 1"
+    const option2 = document.createElement("option")
+    option2.value = "Priority 2"
+    option2.textContent = "Priority 2"
+    const option3 = document.createElement("option")
+    option3.value = "Priority 3"
+    option3.textContent = "Priority 3"
+
+
+    const forthRow = document.createElement("div")
+    forthRow.classList.add("form-forth-row")
+
+    const cancel = document.createElement("button")
+    cancel.textContent = "Cancel"
+    cancel.addEventListener("click", function(e) {
+        e.preventDefault()
+        cancel.parentElement.parentElement.remove()
+        renderAndDisplayAddTaskButton()
+    })
+    
+    const submit = document.createElement("input")
+    submit.type = "submit"
+    submit.value = "Add task"
+    form.addEventListener("submit", function(e) {
+        e.preventDefault()
+        
+        let task = new createTaskObject(name.value, description.value, dateInput.value, priority.value, Date.now())
+
+        projects[projectIndex].tasks.push(task)
+        addProjectsToLocalStorage()
+
+        renderProjectTasks(projectIndex)
+
+        console.log(projects)
+        
+    })
+
+    form.appendChild(name)
+    form.appendChild(description)
+    form.appendChild(thirdRow)
+    form.appendChild(forthRow)
+    thirdRow.appendChild(dateInput)
+    thirdRow.appendChild(priority)
+    priority.appendChild(option1)
+    priority.appendChild(option2)
+    priority.appendChild(option3)
+    forthRow.appendChild(cancel)
+    forthRow.appendChild(submit)
+
+    return form
+
+}
+
+
+
+
+
 
 // add projects Cancel Button //
 
@@ -72,29 +228,14 @@ addProjectsCancelButton.addEventListener("click" , function() {
     }
 })
 
-// function to creat a new task array // 
+// add projects button //
 
-function createTaskArray(arrayName) {
-this.arrayName = arrayName
-}
-
-
-
-// add functionality to header add task button //
-
-headerAddTaskButton.addEventListener("click", function() {
-    tasksArea.lastChild.remove()
-    tasksArea.appendChild(createAddTaskForm())
-})
-
-// display projects button //
-
-lineMenuButton.addEventListener("click", function() {
-    if (sideMenu.style.opacity === "1") {
-        sideMenu.style.opacity = "0" 
+addProjectsButton.addEventListener("click", function() {
+    if (addProjectFormDiv.style.display === "block") {
+        addProjectFormDiv.style.display = "none" 
     }
     else {
-        sideMenu.style.opacity = "1"
+        addProjectFormDiv.style.display = "block"
     }
 })
 
@@ -113,7 +254,7 @@ function createTaskObject(name, description, date, priority, dataId) {
 
 // Render a task //
 
-function renderTask(title, description, dueDate, priorityNum, dataId) {
+function renderTask(title, description, dueDate, priorityNum, dataId, arrayIndex) {
     
     const task = document.createElement("div")
     task.classList.add("task")
@@ -125,7 +266,7 @@ function renderTask(title, description, dueDate, priorityNum, dataId) {
     checkBox.type = "checkbox"
     checkBox.addEventListener("change", function(e) {
 
-        completeTask(e)
+        completeTask(e, arrayIndex)
     })
 
     const taskInfo = document.createElement("div")
@@ -186,137 +327,6 @@ function renderTask(title, description, dueDate, priorityNum, dataId) {
 }
 
 
-// render all tasks //
-
-function renderAllTasks() {
-
-    tasksArea.innerHTML = ""
-
-    const mainTitle = document.createElement("h1")
-    mainTitle.textContent = "To-Do List"
-    mainTitle.style.marginTop = "20px"
-
-    tasksArea.appendChild(mainTitle)
-
-    for (i = 0; i < tasks.length; i++) {
-        renderTask(tasks[i].name, tasks[i].description, tasks[i].date, tasks[i].priority, tasks[i].dataId)
-    }
-
-    renderAndDisplayAddTaskButton()
-}
-
-
-// render and display addtask button //
-
-function renderAndDisplayAddTaskButton() {
-    const button = document.createElement("button")
-    button.classList.add("add-task")
-    button.setAttribute("id", "addTaskButton")
-
-    const plusImg = document.createElement("img")
-    plusImg.src = "images/plus-blue.png"
-
-    const plusButtonText = document.createElement("h2")
-    plusButtonText.textContent = "Add task"
-
-    button.appendChild(plusImg)
-    button.appendChild(plusButtonText)
-
-    button.addEventListener("mouseenter", function() {
-        plusImg.src = "images/plus-blue-full.png";
-        plusButtonText.style.color = "#1C6EF2"
-    })
-
-    button.addEventListener("mouseleave", function() {
-        plusImg.src = "images/plus-blue.png"
-        plusButtonText.style.color = "#0E0901"
-    })
-
-    button.addEventListener("click", function() {
-        tasksArea.appendChild(createAddTaskForm())
-        button.style.display = "none"
-    })
-
-    tasksArea.appendChild(button)
-}
-
-
-// Create addTaskForm //
-
-function createAddTaskForm() {
-    const form = document.createElement("form")
-    form.classList.add("add-task-form")
-
-    const name = document.createElement("input")
-    name.type = "text"
-    name.placeholder = "Task name"
-    name.setAttribute("required", true)
-
-    const description = document.createElement("input")
-    description.type = "text"
-    description.placeholder = "Description"
-
-    const thirdRow = document.createElement("div")
-    thirdRow.classList.add("form-third-row")
-
-    const dateInput = document.createElement("input")
-    dateInput.type = "date"
-
-    const priority = document.createElement("select")
-    const option1 = document.createElement("option")
-    option1.value = "Priority 1"
-    option1.textContent = "Priority 1"
-    const option2 = document.createElement("option")
-    option2.value = "Priority 2"
-    option2.textContent = "Priority 2"
-    const option3 = document.createElement("option")
-    option3.value = "Priority 3"
-    option3.textContent = "Priority 3"
-
-
-    const forthRow = document.createElement("div")
-    forthRow.classList.add("form-forth-row")
-
-    const cancel = document.createElement("button")
-    cancel.textContent = "Cancel"
-    cancel.addEventListener("click", function(e) {
-        e.preventDefault()
-        cancel.parentElement.parentElement.remove()
-        renderAndDisplayAddTaskButton()
-        renderAllTasks()
-    })
-    
-    const submit = document.createElement("input")
-    submit.type = "submit"
-    submit.value = "Add task"
-    form.addEventListener("submit", function(e) {
-        e.preventDefault()
-        
-        let task = new createTaskObject(name.value, description.value, dateInput.value, priority.value, Date.now())
-
-        tasks.push(task)
-        addTasksToLocalStorage()
-
-        renderAllTasks()
-        
-    })
-
-    form.appendChild(name)
-    form.appendChild(description)
-    form.appendChild(thirdRow)
-    form.appendChild(forthRow)
-    thirdRow.appendChild(dateInput)
-    thirdRow.appendChild(priority)
-    priority.appendChild(option1)
-    priority.appendChild(option2)
-    priority.appendChild(option3)
-    forthRow.appendChild(cancel)
-    forthRow.appendChild(submit)
-
-    return form
-
-}
-
 // Create edit Task Form //
 
 function createEditTaskForm(title, description, dueDate, priorityNum, dataId) {
@@ -363,7 +373,7 @@ function createEditTaskForm(title, description, dueDate, priorityNum, dataId) {
         e.preventDefault()
         cancel.parentElement.parentElement.remove()
         renderAndDisplayAddTaskButton()
-        renderAllTasks()
+        //renderAllTasks
     })
     
     const submit = document.createElement("input")
@@ -404,137 +414,49 @@ function createEditTaskForm(title, description, dueDate, priorityNum, dataId) {
 
 // function to add tasks array to storage 
 
-function addTasksToLocalStorage() {
-    let TasksForStorage = JSON.stringify(tasks)
-    localStorage.setItem("tasks", TasksForStorage)
-
-    console.log(tasksTakenFromStorage)
-    console.log(tasks)
-
+function addProjectsToLocalStorage() {
+    let TasksForStorage = JSON.stringify(projects)
+    localStorage.setItem("Projects", TasksForStorage)
 }
 
-// function to load and display tasks in storage
+// function to load and display projectcs in storage
 
-function loadTasksFromStorage() {
+function loadProjectsFromStorage() {
 
-    tasks = tasksTakenFromStorage
+    if (projectsTakenFromStorage) {
+        projects = projectsTakenFromStorage
+    }
+    
 
-    console.log(tasksTakenFromStorage)
-    console.log(tasks)
-
-    renderAllTasks()
+    renderProjectsMenu()
 }
+
+
+// add functionality to header add task button //
+
+headerAddTaskButton.addEventListener("click", function() {
+    tasksArea.lastChild.remove()
+    tasksArea.appendChild(createAddTaskForm())
+})
 
 // function which will remove task from array, add new array to storage and display new array
 
-function completeTask(e) {
-
-    e.target.parentElement.parentElement.remove()
-
-    let arrayIndex = tasks.findIndex(item => item.dataId === parseInt(e.target.parentElement.parentElement.dataset.id))
-
-    tasks.splice(arrayIndex, 1)
-
-    addTasksToLocalStorage()
-}
-
-/*
-function createTaskform(SubmitFunction) {
-
-    const form = document.createElement("form")
-    form.classList.add("add-task-form")
-
-    const name = document.createElement("input")
-    name.type = "text"
-    name.placeholder = "Task name"
-    name.setAttribute("required", true)
-
-    const description = document.createElement("input")
-    description.type = "text"
-    description.placeholder = "Description"
-
-    const thirdRow = document.createElement("div")
-    thirdRow.classList.add("form-third-row")
-
-    const dateInput = document.createElement("input")
-    dateInput.type = "date"
-
-    const priority = document.createElement("select")
-    const option1 = document.createElement("option")
-    option1.value = "Priority 1"
-    option1.textContent = "Priority 1"
-    const option2 = document.createElement("option")
-    option2.value = "Priority 2"
-    option2.textContent = "Priority 2"
-    const option3 = document.createElement("option")
-    option3.value = "Priority 3"
-    option3.textContent = "Priority 3"
+function completeTask(e, arrayIndex) {
 
 
-    const forthRow = document.createElement("div")
-    forthRow.classList.add("form-forth-row")
+    let taskIndex = projects[arrayIndex].tasks.findIndex(item => item.dataId === parseInt(e.target.parentElement.parentElement.dataset.id))
 
-    const cancel = document.createElement("button")
-    cancel.textContent = "Cancel"
-    cancel.addEventListener("click", function(e) {
-        e.preventDefault()
-        cancel.parentElement.parentElement.remove()
-        renderAndDisplayAddTaskButton()
-        renderAllTasks()
-    })
-    
-    const submit = document.createElement("input")
-    submit.type = "submit"
-    submit.value = "Add task"
-    form.addEventListener("submit", function(e) {
-        SubmitFunction
-    })
+    projects[arrayIndex].tasks.splice(taskIndex, 1)
+    renderProjectTasks(arrayIndex)
 
-    form.appendChild(name)
-    form.appendChild(description)
-    form.appendChild(thirdRow)
-    form.appendChild(forthRow)
-    thirdRow.appendChild(dateInput)
-    thirdRow.appendChild(priority)
-    priority.appendChild(option1)
-    priority.appendChild(option2)
-    priority.appendChild(option3)
-    forthRow.appendChild(cancel)
-    forthRow.appendChild(submit)
+    addProjectsToLocalStorage()
 
-    return form
+    console.log(projects)
 
 }
 
-function addNewTaskToArray(e) {
-    e.preventDefault()
-        
-    let task = new createTaskObject(name.value, description.value, dateInput.value, priority.value, Date.now())
+loadProjectsFromStorage()
 
-    tasks.push(task)
-    addTasksToLocalStorage()
-
-    renderAllTasks()
-}
-
-function editAndAddTaskToArray(e) {
-    e.preventDefault()
-  
-    let arrayIndex = tasks.findIndex(item => item.dataId === dataId)
-
-    tasks[arrayIndex].name = nameInput.value
-    tasks[arrayIndex].description = descriptionInput.value
-    tasks[arrayIndex].date = dateInput.value
-    tasks[arrayIndex].priority = priority.value
-
-    addTasksToLocalStorage()
-    renderAllTasks()
-
-    console.log(tasks)
-}
-*/
-
-loadTasksFromStorage()
 
 
 
