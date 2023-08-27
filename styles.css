@@ -316,7 +316,7 @@ hr {
     font-weight: 600;
     background-color: #e2e1de;
     font-size: 15px;
-    padding: 10px;
+    padding: 15px;
     display: flex;
     justify-content: space-between;
     
@@ -333,7 +333,21 @@ hr {
 }
 
 .side-menu li {
-    padding-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+.side-menu li img{
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+}
+
+.side-menu li:hover img {
+    opacity: 0.6;
+    transition: 0.3;
 }
 
 .side-menu li:hover {
