@@ -111,6 +111,7 @@ function renderProjectTasks(projectIndex) {
     const mainTitle = document.createElement("h1")
     mainTitle.textContent = projects[projectIndex].projectName
     mainTitle.style.marginTop = "20px"
+    mainTitle.classList.add("projectTitle")
 
     tasksArea.appendChild(mainTitle)
 
@@ -119,6 +120,37 @@ function renderProjectTasks(projectIndex) {
     }
 
     renderAndDisplayAddTaskButton(projectIndex)
+    renderDeleteProjectButton()
+}
+
+// render delete project button // 
+
+function renderDeleteProjectButton() {
+    const deleteProjectDiv = document.createElement("div")
+    deleteProjectDiv.classList.add("deleteProjectDiv")
+    const deleteProjectIcon = document.createElement("img")
+    deleteProjectIcon.src = "images/deleteLine.png"
+    const deleteProjectText = document.createElement("h2")
+    deleteProjectText.textContent = "Delete project"
+
+    deleteProjectDiv.appendChild(deleteProjectIcon)
+    deleteProjectDiv.appendChild(deleteProjectText)
+    tasksArea.appendChild(deleteProjectDiv)
+
+    deleteProjectDiv.addEventListener("mouseenter", function() {
+        deleteProjectIcon.src = "images/deleteFull.png";
+        deleteProjectText.style.color = "#FF000085"
+    })
+
+    deleteProjectDiv.addEventListener("mouseleave", function() {
+        deleteProjectIcon.src = "images/deleteLine.png"
+        deleteProjectText.style.color = "#0E0901"
+    })
+
+    deleteProjectDiv.addEventListener("click", function() {
+        console.log("clicked")
+    })
+
 }
 
 
@@ -194,6 +226,7 @@ function renderTask(title, description, dueDate, priorityNum, dataId, arrayIndex
     thirdRow.appendChild(priorityText)
 
     tasksArea.appendChild(task)
+    
 }
 
 

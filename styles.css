@@ -99,27 +99,18 @@ header button img {
 /* tasks section */
 
 .tasks-section {
-    display: grid;
-    grid-template-columns: 1fr 7fr;
-    justify-items: center;
+    display: flex;
     height: 100vh;
-    overflow: hidden;
+    overflow-y: hidden;
 }
 
-.tasks,
 .tasks h1{
     margin-bottom: 20px;
 }
 
 .tasks {
-    width: 80%;
-    margin-top: 10px;
-}
-
-hr {
-    border-top-width: 0;
-    border-color: #cac9c683;
-    margin-left: 20px;
+    width: 60%;
+    margin: 0 auto;
 }
 
 .task {
@@ -147,6 +138,7 @@ hr {
     scale: 0.7;
 }
 
+.deleteProjectDiv,
 .add-task {
     background-color: transparent;
     border: none;
@@ -156,6 +148,7 @@ hr {
     display: flex;
 }
 
+.deleteProjectDiv img,
 .add-task img {
     width: 20px;
     height: 20px;
@@ -179,8 +172,12 @@ hr {
 }
 
 .task:hover {
-    background-color: #f7f5f0;
+    background-color: #ecebe6;
     transition: 0.3s;
+}
+
+.deleteProjectDiv {
+    display: flex;
 }
 
 
