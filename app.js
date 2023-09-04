@@ -75,6 +75,8 @@ function createProjectArray(projectName) {
 
 function renderProjectsMenu() {
     
+    projectList.innerHTML = ""
+
     for (i = 0; i < projects.length; i++) {
 
         let project = document.createElement("li")
@@ -107,6 +109,7 @@ function renderProjectsMenu() {
 function renderProjectTasks(projectIndex) {
 
     tasksArea.innerHTML = ""
+    tasksArea.setAttribute("data-id", projects[projectIndex].projectId)
 
     const mainTitle = document.createElement("h1")
     mainTitle.textContent = projects[projectIndex].projectName
@@ -120,7 +123,7 @@ function renderProjectTasks(projectIndex) {
     }
 
     renderAndDisplayAddTaskButton(projectIndex)
-    renderDeleteProjectButton()
+    renderDeleteProjectButton(projectIndex)
 }
 
 // render delete project button // 
@@ -147,10 +150,38 @@ function renderDeleteProjectButton() {
         deleteProjectText.style.color = "#0E0901"
     })
 
-    deleteProjectDiv.addEventListener("click", function() {
-        console.log("clicked")
-    })
+    deleteProjectDiv.addEventListener("click", function(e) {
 
+        if (e.target.parentElement.parentElement.firstChild.textContent === "Main Tasks") {
+            alert("You cannot delete the Main Tasks project")
+        }
+        else {
+            confirmDelete(e)
+        }
+    })
+}
+
+// confirm action alert //
+
+function confirmDelete(e) {
+    
+        const response = confirm("Are you sure you want to delete this project?");
+
+        if (response) {
+            deleteProject(e)
+            renderProjectsMenu()
+            renderProjectTasks(0)
+            addProjectsToLocalStorage()
+        } 
+    }
+
+// delete project from project array // 
+
+function deleteProject(e) {
+
+    let Index = projects.findIndex(item => item.projectId === parseInt(e.target.parentElement.parentElement.dataset.id))
+
+    projects.splice(Index, 1)
 }
 
 
@@ -425,10 +456,7 @@ function createAddTaskForm(projectIndex) {
         projects[projectIndex].tasks.push(task)
         addProjectsToLocalStorage()
 
-        renderProjectTasks(projectIndex)
-
-        console.log(projects)
-        
+        renderProjectTasks(projectIndex)  
     })
 
     form.appendChild(name)
@@ -481,7 +509,3 @@ function loadProjectsFromStorage() {
 
 
 loadProjectsFromStorage()
-
-
-
-
