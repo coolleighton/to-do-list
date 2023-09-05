@@ -58,42 +58,12 @@ header {
     height: 50px;
     display: flex;
     align-items: center;
-    padding-left: 25px;
+    padding-left: 15px;
 }
 
-header button {
-    padding: 5px;
-    background-color: transparent;
-    border: none;
-    margin: 0 5px;
-    height: 35px;
-    width: 35px;
-    border-radius: 5px;
-}
-
-header button:hover {
-    background-color: #4d8ef8;
-    cursor: pointer;
-}
-
-header button img {
-    height: 25px;
-    width: 25px;
-}
-
-.tasks-counter {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: rgb(255, 255, 255);
-    height: 35px;
-    width: 65px;
-}
-
-.tasks-counter p {
-    font-weight: 200;
-    margin-left: 5px;
-    color: white;
+header img {
+    height: 30px;
+    padding: 12px 0 10px;
 }
 
 /* tasks section */
@@ -146,14 +116,26 @@ header button img {
     align-items: center;
     margin: 10px 0;
     display: flex;
+    padding-left: 20px;
 }
 
-.deleteProjectDiv img,
+.deleteProjectDiv h2,
+.add-task h2 {
+    font-size: 18px;
+}
+
 .add-task img {
     width: 20px;
     height: 20px;
     margin-right: 5px;
 }
+
+.deleteProjectDiv img {
+    width: 25px;
+    height: 25px;
+    margin-right: 2px;
+}
+
 
 .due-date {
     margin-right: 10px;
@@ -177,6 +159,10 @@ header button img {
 }
 
 .deleteProjectDiv {
+    display: flex;
+}
+
+.main-title-div {
     display: flex;
 }
 
@@ -351,6 +337,37 @@ header button img {
     background-color: #cac9c6;
     cursor: pointer;
     transition: 0.3s;
+}
+
+/* Media Queries */ 
+
+@media (max-width: 750px) {
+
+.tasks h1 {
+    margin-bottom: 10px;
+}
+
+.tasks {
+    width: 100%;
+    padding: 0 20px;
+}
+
+.main-title-div {
+    flex-direction: column;
+}
+
+.deleteProjectDiv {
+    padding-left: 4px;
+}
+
+.add-task {
+    padding-left: 7px;
+}
+
+.deleteProjectDiv {
+    margin-bottom: 20px;
+}
+
 }
 
 

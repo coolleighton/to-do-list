@@ -4,9 +4,7 @@ let projectsTakenFromStorage = JSON.parse(localStorage.getItem("Projects"))
 // Selectors //
 
 const tasksArea = document.querySelector("#tasksArea")
-const headerAddTaskButton = document.querySelector("#headerAddTaskButton")
 const sideMenu = document.querySelector("#sideMenu")
-const lineMenuButton = document.querySelector("#lineMenuButton")
 const addProjectsButton = document.querySelector("#addProject")
 const addProjectFormDiv = document.querySelector("#add-project-Form")
 const addProjectForm = document.querySelector("#add-project-Form-proper")
@@ -111,19 +109,24 @@ function renderProjectTasks(projectIndex) {
     tasksArea.innerHTML = ""
     tasksArea.setAttribute("data-id", projects[projectIndex].projectId)
 
+    const mainTitleDiv = document.createElement("div")
+    mainTitleDiv.classList.add("main-title-div")
+
     const mainTitle = document.createElement("h1")
     mainTitle.textContent = projects[projectIndex].projectName
     mainTitle.style.marginTop = "20px"
     mainTitle.classList.add("projectTitle")
 
-    tasksArea.appendChild(mainTitle)
+    mainTitleDiv.appendChild(mainTitle)
+    tasksArea.appendChild(mainTitleDiv)
 
     for (i = 0; i < projects[projectIndex].tasks.length; i++) {
         renderTask(projects[projectIndex].tasks[i].name, projects[projectIndex].tasks[i].description, projects[projectIndex].tasks[i].date, projects[projectIndex].tasks[i].priority, projects[projectIndex].tasks[i].dataId,projectIndex)
     }
 
-    renderAndDisplayAddTaskButton(projectIndex)
-    renderDeleteProjectButton(projectIndex)
+    mainTitleDiv.appendChild(renderAndDisplayAddTaskButton(projectIndex))
+
+    mainTitleDiv.appendChild(renderDeleteProjectButton(projectIndex))
 }
 
 // render delete project button // 
@@ -138,7 +141,6 @@ function renderDeleteProjectButton() {
 
     deleteProjectDiv.appendChild(deleteProjectIcon)
     deleteProjectDiv.appendChild(deleteProjectText)
-    tasksArea.appendChild(deleteProjectDiv)
 
     deleteProjectDiv.addEventListener("mouseenter", function() {
         deleteProjectIcon.src = "images/deleteFull.png";
@@ -159,6 +161,8 @@ function renderDeleteProjectButton() {
             confirmDelete(e)
         }
     })
+
+    return deleteProjectDiv
 }
 
 // confirm action alert //
@@ -396,10 +400,8 @@ function renderAndDisplayAddTaskButton(projectIndex) {
         button.style.display = "none"
     })
 
-    tasksArea.appendChild(button)
+    return button
 }
-
-
 
 // Create addTaskForm //
 
@@ -441,8 +443,7 @@ function createAddTaskForm(projectIndex) {
     cancel.textContent = "Cancel"
     cancel.addEventListener("click", function(e) {
         e.preventDefault()
-        cancel.parentElement.parentElement.remove()
-        renderAndDisplayAddTaskButton()
+        renderProjectTasks(projectIndex)
     })
     
     const submit = document.createElement("input")
